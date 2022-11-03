@@ -11,6 +11,9 @@ contract BasicNft is ERC721 {
 
     uint256 private s_tokenCounter;
 
+    // EVENTS
+    event BirdieMinted(uint256);
+
     constructor() ERC721("Birdie", "BRD") {
         s_tokenCounter = 0;
     }
@@ -20,6 +23,9 @@ contract BasicNft is ERC721 {
     function mintNft() public returns (uint256) {
         // mint the token to whoever calls this mint function
         _safeMint(msg.sender, s_tokenCounter);
+
+        emit BirdieMinted(s_tokenCounter);
+
         s_tokenCounter = s_tokenCounter + 1;
 
         return s_tokenCounter;

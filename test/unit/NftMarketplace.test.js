@@ -46,4 +46,14 @@ const { developmentChains } = require("../../helper-hardhat-config")
               assert.equal(newOwner.toString(), player.address)
               assert.equal(deployerProceeds.toString(), PRICE.toString())
           })
+
+          it("checking for exclusivity of the NFT requested to be listed", async function () {
+              await nftMarketplace.listItem(basicNft.address, TOKEN_ID, PRICE)
+
+              const error = `NftMarketPlace__AlreadyListed("${basicNft.address}", ${TOKEN_ID})`
+
+              await expect(
+                  nftMarketplace.listItem(basicNft.address, TOKEN_ID, PRICE)
+              ).to.be.revertedWith(error)
+          })
       })

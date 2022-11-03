@@ -64,4 +64,13 @@ const { developmentChains } = require("../../helper-hardhat-config")
                   nftMarketplace.listItem(basicNft.address, TOKEN_ID, PRICE)
               ).to.be.revertedWith("NftMarketPlace__NotApprovedForMarketPlace()")
           })
+
+          it("listing mapping is correctly updated", async function () {
+              await nftMarketplace.listItem(basicNft.address, TOKEN_ID, PRICE)
+              const listing = await nftMarketplace.getListing(basicNft.address, TOKEN_ID)
+
+              assert.equal(listing.price.toString(), PRICE.toString())
+              // have to use deployer and NOT deployer.address
+              assert.equal(listing.seller.toString(), deployer)
+          })
       })

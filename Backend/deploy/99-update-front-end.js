@@ -3,8 +3,8 @@
 const { ethers, network } = require("hardhat")
 const fs = require("fs")
 
-const frontEndContractsFile = "../Frontend/moraliss/constants/networkMapping.json"
-const frontEndAbiLocation = "../Frontend/moraliss/constants/"
+const frontEndContractsFile = "../Frontend/TheGraph/constants/networkMapping.json"
+const frontEndAbiLocation = "../Frontend/TheGraph/constants/"
 
 module.exports = async function () {
     if (process.env.UPDATE_FRONT_END) {

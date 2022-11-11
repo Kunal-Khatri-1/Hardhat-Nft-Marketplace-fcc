@@ -1,0 +1,14 @@
+// appolo/client => how we're gonna make queries to our newly created Graphql
+npm install @apollo/client graphql
+
+// add this to playground
+{
+  activeItems(first: 5, where:{buyer:"0x00000000"}){
+    id
+    buyer
+    seller
+    nftAddress
+    tokenId
+    price
+  }
+}

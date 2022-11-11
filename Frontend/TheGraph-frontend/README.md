@@ -18,7 +18,9 @@
         2. Library: Using an indexing system we know where to find a book that we are looking for without having to go through book by book throught the library.
 
     7. Bulding a subgraph:
-        1. Create a new Subgraph in TheGraph UI (thegraph.com)
+        1. Install TheGraph CLI
+            1. `yarn global add @graphprotocol/graph-cli`
+            2. Its just CLI that will help us build a graph and build instructions for the graph to actually start indexing our events
         2. Use the graph CLI to scaffold out an empty graph boilerplate that you can then update with your own contract information.
         3. In your subgraph configuration, define things like data model, the network, the contract addresses and other configurations that are specific to the data you would like to index.
         4. Deploy subgraph to use it in application using TheGraph CLI running the deploy command:

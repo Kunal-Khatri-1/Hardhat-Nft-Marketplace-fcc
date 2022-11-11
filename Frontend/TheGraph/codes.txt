@@ -1,0 +1,23 @@
+// grabs everything in schema.graphql and puts them in the generated folder TS file 
+graph codegen
+
+// in subgraph.yaml set
+startBlock: blockNo - 1
+
+// setting up so that whenever we push our code its gonna push it to the subgraph made on theGraph site to help us deploy automatically
+graph auth --studio <Deploy-Key>
+// makes sure schema.graphql looks good
+graph codegen
+// compile and run all subgraph.yaml, nftMarketplace.ts, generated folder and put it inside the build folder
+// generated folder <=> Pseudo build folder => build some typings for TypeScript    ||      build <=> real build folder => what we will be deploying and sending to theGraph
+graph build
+// deploy
+graph deploy --studio nft-marketplace-fcc
+// Output
+Build completed: QmerRDsjS5THK37WYDn2sAbSo8NPfNePriv1ptpLvvF9yw
+
+Deployed to https://thegraph.com/studio/subgraph/nft-marketplace-fcc        
+
+Subgraph endpoints:
+Queries (HTTP):     https://api.studio.thegraph.com/query/37907/nft-marketplace-fcc/v0.0.1
+// Now we have some nodes listening for our events to be emitted

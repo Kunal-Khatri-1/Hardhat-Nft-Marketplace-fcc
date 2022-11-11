@@ -7,22 +7,30 @@ const { moveBlocks } = require("../utils/move-blocks")
 async function mintAndList() {
     const nftmarketplace = await ethers.getContract("NftMarketplace")
     const basicNft = await ethers.getContract("BasicNft")
+    console.log(`NftMarketplace: ${nftmarketplace.address}`)
+    console.log(`BasicNft ${basicNft.address}`)
 
     console.log("Minting...")
     const mintTx = await basicNft.mintNft()
+    console.log("mintNFt transaction sent...")
+
+    console.log("waiting for transaction receipt...")
     const mintTxReceipt = await mintTx.wait(1)
+    console.log("Received mintNft transaction receipt")
+
     // capturing the tokenId in Event
     const tokenId = mintTxReceipt.events[0].args.tokenId
+    console.log(`TokenId: ${tokenId}`)
 
     console.log("Approving marketplace for the NFT...")
-    const approvalTx = await basicNft.approve(basicNft.address, tokenId)
+    const approvalTx = await basicNft.approve(nftmarketplace.address, tokenId)
     await approvalTx.wait(1)
 
     console.log("Listing NFT...")
     const listingTx = await nftmarketplace.listItem(
         basicNft.address,
         tokenId,
-        ethers.utils.parseEther("1")
+        ethers.utils.parseEther("0.0001")
     )
     await listingTx.wait(1)
 

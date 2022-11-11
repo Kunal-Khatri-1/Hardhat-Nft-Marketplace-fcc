@@ -4,7 +4,6 @@ pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-
 //////////////////////
 // ERRORS //
 /////////////////////
@@ -59,11 +58,7 @@ contract NftMarketplace is ReentrancyGuard {
     //////////////////////
     // MODIFIERS //
     /////////////////////
-    modifier notListed(
-        address nftAddress,
-        uint256 tokenId,
-        address owner
-    ) {
+    modifier notListed(address nftAddress, uint256 tokenId) {
         Listing memory listing = s_listings[nftAddress][tokenId];
         if (listing.price > 0) {
             revert NftMarketPlace__AlreadyListed(nftAddress, tokenId);
@@ -78,7 +73,6 @@ contract NftMarketplace is ReentrancyGuard {
     ) {
         IERC721 nft = IERC721(nftAddress);
         address owner = nft.ownerOf(tokenId);
-
         if (spender != owner) {
             revert NftMarketPlace__NotOwner();
         }
@@ -118,7 +112,7 @@ contract NftMarketplace is ReentrancyGuard {
     )
         external
         // challenge: Have this contract accept payment in a subset of tokens as well using chanlink pricefeeds to convert the price of the tokens between each other
-        notListed(nftAddress, tokenId, msg.sender)
+        notListed(nftAddress, tokenId)
         isOwner(nftAddress, tokenId, msg.sender)
     {
         if (price <= 0) {
@@ -126,6 +120,7 @@ contract NftMarketplace is ReentrancyGuard {
         }
 
         IERC721 nft = IERC721(nftAddress);
+
         // checking if marketplace contract is the operator for the NFT
         if (nft.getApproved(tokenId) != address(this)) {
             revert NftMarketPlace__NotApprovedForMarketPlace();

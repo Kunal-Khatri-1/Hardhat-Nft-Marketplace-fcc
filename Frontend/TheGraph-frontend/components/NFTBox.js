@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { useWeb3Contract, useMoralis } from "react-moralis"
-import nftMarketPlaceAbi from "../constants/NftMarketplace.json"
+import { useMoralis, useWeb3Contract } from "react-moralis"
+import nftMarketplaceAbi from "../constants/NftMarketplace.json"
 import nftAbi from "../constants/BasicNft.json"
 // using NextJs Image tags using moralis => can't deploy it statically to IPFS
 import Image from "next/image"
@@ -26,11 +26,14 @@ const truncateStr = (fullStr, strLen) => {
 }
 
 export default function NFTBox({ price, nftAddress, tokenId, marketplaceAddress, seller }) {
+    console.log(
+        `price: ${price}, nftAddress: ${nftAddress}, tokenId: ${tokenId}, marketplaceAddress ${marketplaceAddress}, seller: ${seller}`
+    )
     const { isWeb3Enabled, account } = useMoralis()
-    const { imageURI, setImageURI } = useState("")
-    const { tokenName, setTokenName } = useState("")
-    const { tokenDescription, setTokenDescription } = useState("")
-    const { showModal, setShowModal } = useState(false)
+    const [imageURI, setImageURI] = useState("")
+    const [tokenName, setTokenName] = useState("")
+    const [tokenDescription, setTokenDescription] = useState("")
+    const [showModal, setShowModal] = useState(false)
     const hideModal = () => setShowModal(false)
     const dispatch = useNotification()
 
@@ -44,7 +47,7 @@ export default function NFTBox({ price, nftAddress, tokenId, marketplaceAddress,
     })
 
     const { runContractFunction: buyItem } = useWeb3Contract({
-        abi: nftMarketPlaceAbi,
+        abi: nftMarketplaceAbi,
         contractAddress: marketplaceAddress,
         functionName: "buyItem",
         msgValue: price,

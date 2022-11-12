@@ -12,3 +12,9 @@ npm install @apollo/client graphql
     price
   }
 }
+
+// we are using Image from nextjs which comes with some pre-processing
+// this makes it little hard to use on IPFS
+// need to update we use images so that we can host this dApp on IPFS
+// some other options we have to host =>
+// Moralis, Vercel any other traditional centralized hosting service

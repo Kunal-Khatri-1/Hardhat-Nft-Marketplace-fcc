@@ -19,6 +19,7 @@ import GET_ACTIVE_ITEMS from "../constants/subgraphQueries"
 export default function Home() {
     const { isWeb3Enabled, chainId } = useMoralis()
     const chainString = chainId ? parseInt(chainId).toString() : "31337"
+    console.log(`chainString: ${chainString}`)
     const marketplaceAddress = networkMapping[chainString].NftMarketplace[0]
 
     // this should return listed NFTs

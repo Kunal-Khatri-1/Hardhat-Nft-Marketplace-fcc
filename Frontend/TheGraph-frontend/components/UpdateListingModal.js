@@ -3,10 +3,13 @@ import { useWeb3Contract } from "react-moralis"
 import { Modal, Input, useNotification } from "web3uikit"
 import nftMarketplaceAbi from "../constants/NftMarketplace.json"
 import { ethers } from "ethers"
+import NFTBox from "./NFTBox"
 
 export default function UpdateListingModal({
     nftAddress,
+    price,
     tokenId,
+    seller,
     isVisible,
     marketplaceAddress,
     onClose,
@@ -55,15 +58,32 @@ export default function UpdateListingModal({
                     onSuccess: handleUpdateListingSuccess,
                 })
             }}
+            title="Update Listing"
+            width="500px"
         >
-            <Input
-                label="Update listing price in L1 Currency (ETH)"
-                name="New listing price"
-                type="number"
-                onChange={(event) => {
-                    setPriceToUpdateListingWith(event.target.value)
-                }}
-            ></Input>
+            <div className="flex flex-row justify-center items-center">
+                <div className=" w-40">
+                    <NFTBox
+                        price={price}
+                        nftAddress={nftAddress}
+                        tokenId={tokenId}
+                        marketplaceAddress={marketplaceAddress}
+                        seller={seller}
+                        key={`${nftAddress}${tokenId}`}
+                    />
+                </div>
+            </div>
+
+            <div className="my-8 flex flex-row justify-center items-center">
+                <Input
+                    label="Update listing price in L1 Currency (ETH)"
+                    name="New listing price"
+                    type="number"
+                    onChange={(event) => {
+                        setPriceToUpdateListingWith(event.target.value)
+                    }}
+                ></Input>
+            </div>
         </Modal>
     )
 }

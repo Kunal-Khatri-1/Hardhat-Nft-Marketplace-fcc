@@ -7,6 +7,7 @@ import Image from "next/image"
 import { Card, useNotification } from "web3uikit"
 import { ethers } from "ethers"
 import UpdateListingModal from "./UpdateListingModal"
+import { Eth } from "@web3uikit/icons"
 
 // this function is not dependent on anything inside of you app
 // it is just a raw function => defining it outside export default
@@ -113,46 +114,61 @@ export default function NFTBox({ price, nftAddress, tokenId, marketplaceAddress,
         })
     }
 
+    function getPrice() {
+        const fullPrice = ethers.utils.formatUnits(price, "ether")
+        const indexOfDecimal = fullPrice.indexOf(".")
+        const leadingSubstring = fullPrice.substring(0, indexOfDecimal)
+        const trailingSubstring = fullPrice.substring(indexOfDecimal, indexOfDecimal + 5)
+        let returnString = leadingSubstring + trailingSubstring
+        if (fullPrice.length > 6) {
+            returnString = returnString + "..."
+        }
+        return returnString
+    }
+
     return (
         <div>
-            <div>
-                {imageURI ? (
-                    <div>
-                        <UpdateListingModal
-                            isVisible={showModal}
-                            tokenId={tokenId}
-                            marketplaceAddress={marketplaceAddress}
-                            nftAddress={nftAddress}
-                            onClose={hideModal}
-                        />
-                        <Card
-                            title={tokenName}
-                            description={tokenDescription}
-                            onClick={handleCardClick}
-                        >
-                            <div className="p-2">
-                                <div className="flex flex-col items-end gap-2">
-                                    <div>#{tokenId}</div>
-                                    <div className="italic text-sm">
-                                        Owned by {formattedSellerAddress}
-                                    </div>
-                                    <Image
-                                        loader={() => imageURI}
-                                        src={imageURI}
-                                        height="200"
-                                        width="200"
-                                    />
-                                    <div className="font-bold">
-                                        {ethers.utils.formatUnits(price, "ether")}
-                                    </div>
+            {imageURI ? (
+                <div>
+                    <UpdateListingModal
+                        isVisible={showModal}
+                        price={price}
+                        seller={seller}
+                        tokenId={tokenId}
+                        marketplaceAddress={marketplaceAddress}
+                        nftAddress={nftAddress}
+                        onClose={hideModal}
+                    />
+
+                    <Card
+                        title={tokenName}
+                        description={tokenDescription}
+                        onClick={handleCardClick}
+                    >
+                        <div className="p-2">
+                            <div className="flex flex-col items-end gap-2">
+                                <div>#{tokenId}</div>
+                                <div className="italic text-sm">
+                                    Owned by {formattedSellerAddress}
+                                </div>
+                                <Image
+                                    className=" self-center w-full"
+                                    loader={() => imageURI}
+                                    src={imageURI}
+                                    width="200"
+                                    height="200"
+                                />
+                                <div className="font-bold flex flex-row">
+                                    <Eth fontSize="20px" />
+                                    {getPrice()}
                                 </div>
                             </div>
-                        </Card>
-                    </div>
-                ) : (
-                    <div>Loading...</div>
-                )}
-            </div>
+                        </div>
+                    </Card>
+                </div>
+            ) : (
+                <div>Loading...</div>
+            )}
         </div>
     )
 }

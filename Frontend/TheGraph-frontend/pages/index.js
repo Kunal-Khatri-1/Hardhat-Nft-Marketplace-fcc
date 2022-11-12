@@ -27,37 +27,35 @@ export default function Home() {
 
     return (
         <div className="container mx-auto">
-            <h1 className="py-4 px-4 font-bold text-2xl">Recently Listed</h1>
-            <div className="flex flex-wrap">
-                {isWeb3Enabled ? (
-                    loading || !listedNfts ? (
-                        <div>Loading...</div>
+            <h1 className=" py-16 px-4 font-bold text-3xl text-center">Explore Marketplace</h1>
+            <div className="w-10/12 m-auto">
+                <div className=" grid grid-cols-4 place-items-center gap-6">
+                    {isWeb3Enabled ? (
+                        loading || !listedNfts ? (
+                            <div>Hello Loading...</div>
+                        ) : (
+                            // listedNfts.activeItems.map() NOT listedNfts.map()
+                            listedNfts.activeItems.map((nft) => {
+                                console.log(nft)
+                                const { price, nftAddress, tokenId, seller } = nft
+                                return (
+                                    <div>
+                                        <NFTBox
+                                            price={price}
+                                            nftAddress={nftAddress}
+                                            tokenId={tokenId}
+                                            marketplaceAddress={marketplaceAddress}
+                                            seller={seller}
+                                            key={`${nftAddress}${tokenId}`}
+                                        />
+                                    </div>
+                                )
+                            })
+                        )
                     ) : (
-                        // listedNfts.activeItems.map() NOT listedNfts.map()
-                        listedNfts.activeItems.map((nft) => {
-                            console.log(nft)
-                            const { price, nftAddress, tokenId, seller } = nft
-                            return (
-                                <div>
-                                    {/* Price: {price}
-                                NftAddress: {nftAddress}
-                                TokenId: {tokenId}
-                                seller: {seller} */}
-                                    <NFTBox
-                                        price={price}
-                                        nftAddress={nftAddress}
-                                        tokenId={tokenId}
-                                        marketplaceAddress={marketplaceAddress}
-                                        seller={seller}
-                                        key={`${nftAddress}${tokenId}`}
-                                    />
-                                </div>
-                            )
-                        })
-                    )
-                ) : (
-                    <div>Web3 Currently not Enabled</div>
-                )}
+                        <div>Web3 Currently not Enabled</div>
+                    )}
+                </div>
             </div>
         </div>
     )

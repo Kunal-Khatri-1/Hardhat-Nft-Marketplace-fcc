@@ -64,8 +64,18 @@ export default function Home() {
         })
     }
 
-    const handleWithdrawSuccess = async (tx) => {
+    async function handleListSuccess(tx) {
         await tx.wait(1)
+        dispatch({
+            type: "success",
+            message: "NFT Listed",
+            title: "NFT Listed",
+            position: "topR",
+        })
+    }
+
+    const handleWithdrawSuccess = async (tx) => {
+        tx.wait(1)
         dispatch({
             type: "success",
             message: "Withdrawing proceeds",
@@ -96,67 +106,68 @@ export default function Home() {
         }
     }, [proceeds, account, isWeb3Enabled, chainId])
 
-    async function handleListSuccess(tx) {
-        await tx.wait(1)
-        dispatch({
-            type: "success",
-            message: "NFT Listing",
-            title: "NFT Listed",
-            position: "topR",
-        })
-    }
-
     return (
         <div className={styles.container}>
-            <Form
-                // approve marketplace to pull the NFT from the wallet and then list it
-                // when form is submitted, it will automatically pass all the "data object" to approveAndList function
-                onSubmit={approveAndList}
-                data={[
-                    {
-                        name: "NFT Address",
-                        type: "text",
-                        inputWidth: "50%",
-                        value: "",
-                        key: "nftAddress",
-                    },
-                    {
-                        name: "Token Id",
-                        type: "number",
-                        value: "",
-                        key: "tokenId",
-                    },
-                    {
-                        name: "Price (in ETH)",
-                        type: "number",
-                        value: "",
-                        key: "price",
-                    },
-                ]}
-                title="Sell your NFT!"
-                id="Main Form"
-            />
-            <div>Withdraw {proceeds} proceeds</div>
-            {proceeds != "0" ? (
-                <Button
-                    onClick={() => {
-                        runContractFunction({
-                            params: {
-                                abi: nftMarketplaceAbi,
-                                contractAddress: marketplaceAddress,
-                                functionName: "withdrawProceeds",
-                                params: {},
+            <div className="py-20">
+                <div className="pt-4 w-10/12 m-auto max-w-xl border-2 rounded-md shadow-md">
+                    <h1 className=" py-6 px-4 font-bold text-3xl text-center">Sell your NFT</h1>
+                    <Form
+                        buttonConfig={{
+                            theme: "primary",
+                        }}
+                        // approve marketplace to pull the NFT from the wallet and then list it
+                        // when form is submitted, it will automatically pass all the "data object" to approveAndList function
+                        onSubmit={approveAndList}
+                        data={[
+                            {
+                                name: "NFT Address",
+                                type: "text",
+                                value: "",
+                                key: "nftAddress",
+                                inputWidth: "100%",
                             },
-                            onError: (error) => console.log(error),
-                            onSuccess: handleWithdrawSuccess,
-                        })
-                    }}
-                    text="Withdraw"
-                    type="button"
-                />
-            ) : (
-                <div>No proceeds detected</div>
-            )}
+                            {
+                                name: "Token Id",
+                                type: "number",
+                                value: "",
+                                key: "tokenId",
+                                inputWidth: "100%",
+                            },
+                            {
+                                name: "Price (in ETH)",
+                                type: "number",
+                                value: "",
+                                key: "price",
+                                inputWidth: "100%",
+                            },
+                        ]}
+                        id="Main Form"
+                    />
+
+                    <div className="border-t-2 py-4 mt-4 pl-5 font-bold text-lg flex flex-row justify-between">
+                        Your Balance: {proceeds}
+                        <div className="pr-5">
+                            <Button
+                                onClick={() => {
+                                    runContractFunction({
+                                        params: {
+                                            abi: nftMarketplaceAbi,
+                                            contractAddress: marketplaceAddress,
+                                            functionName: "withdrawProceeds",
+                                            params: {},
+                                        },
+                                        onError: (error) => console.log(error),
+                                        onSuccess: handleWithdrawSuccess,
+                                    })
+                                }}
+                                text="Withdraw"
+                                type="button"
+                                theme="secondary"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

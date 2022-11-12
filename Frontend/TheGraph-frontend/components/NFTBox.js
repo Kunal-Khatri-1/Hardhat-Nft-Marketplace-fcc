@@ -6,6 +6,7 @@ import nftAbi from "../constants/BasicNft.json"
 import Image from "next/image"
 import { Card, useNotification } from "web3uikit"
 import { ethers } from "ethers"
+import UpdateListingModal from "./UpdateListingModal"
 
 // this function is not dependent on anything inside of you app
 // it is just a raw function => defining it outside export default
@@ -90,12 +91,15 @@ export default function NFTBox({ price, nftAddress, tokenId, marketplaceAddress,
     const formattedSellerAddress = isOwnedByUser ? "You" : truncateStr(seller || "", 15)
     const handleCardClick = () => {
         // isOwnedByUser ? show the modal : buyItems
+        console.log("Card clicked")
         isOwnedByUser
             ? setShowModal(true)
             : buyItem({
                   onError: (error) => console.log(error),
                   onSuccess: handleBuyItemSuccess,
               })
+
+        console.log(`ShowModal: ${showModal}`)
     }
 
     const handleBuyItemSuccess = async (tx) => {
@@ -114,7 +118,7 @@ export default function NFTBox({ price, nftAddress, tokenId, marketplaceAddress,
             <div>
                 {imageURI ? (
                     <div>
-                        <updateListingModal
+                        <UpdateListingModal
                             isVisible={showModal}
                             tokenId={tokenId}
                             marketplaceAddress={marketplaceAddress}

@@ -9,9 +9,9 @@ import { useEffect, useState } from "react"
 
 export default function Home() {
     // chainId comes in Hex form => convert it to normal string
-    const { chainId } = useMoralis()
+    const { chainId, account, isWeb3Enabled } = useMoralis()
     const chainString = chainId ? parseInt(chainId).toString() : "31337"
-    const marketplaceAddress = networkMapping(chainString).NftMarketplace[0]
+    const marketplaceAddress = networkMapping[chainString].NftMarketplace[0]
     const dispatch = useNotification()
     const [proceeds, setProceeds] = useState("0")
 
@@ -35,8 +35,10 @@ export default function Home() {
 
         await runContractFunction({
             params: approveOptions,
-            onSuccess: handleApproveSuccess,
-            onError: (error) => console.log(error),
+            onSuccess: (tx) => handleApproveSuccess(tx, nftAddress, tokenId, price),
+            onError: (error) => {
+                console.log(error)
+            },
         })
     }
 
@@ -45,7 +47,7 @@ export default function Home() {
         console.log("Ok! Now time to List")
 
         const listOptions = {
-            abi: NftMarketplaceAbi,
+            abi: nftMarketplaceAbi,
             contractAddress: marketplaceAddress,
             functionName: "listItem",
             params: {

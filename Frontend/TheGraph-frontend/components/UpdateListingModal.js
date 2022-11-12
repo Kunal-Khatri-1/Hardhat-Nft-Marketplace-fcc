@@ -1,10 +1,10 @@
 import { useState } from "react"
-import { useWeb3Contract, useNotification } from "react-moralis"
-import { Modal, Input } from "web3uikit"
+import { useWeb3Contract } from "react-moralis"
+import { Modal, Input, useNotification } from "web3uikit"
 import nftMarketplaceAbi from "../constants/NftMarketplace.json"
 import { ethers } from "ethers"
 
-export default function updateListingModal({
+export default function UpdateListingModal({
     nftAddress,
     tokenId,
     isVisible,
@@ -13,7 +13,7 @@ export default function updateListingModal({
 }) {
     const dispatch = useNotification()
 
-    const { priceToUpdateListingWith, setPriceToUpdateListingWith } = useState(0)
+    const [priceToUpdateListingWith, setPriceToUpdateListingWith] = useState(0)
 
     const handleUpdateListingSuccess = async (tx) => {
         await tx.wait(1)

@@ -6,6 +6,7 @@ import nftMarketplaceAbi from "../constants/NftMarketplace.json"
 import networkMapping from "../constants/networkMapping.json"
 import { useMoralis, useWeb3Contract } from "react-moralis"
 import { useEffect, useState } from "react"
+import { Eth } from "@web3uikit/icons"
 
 export default function Home() {
     // chainId comes in Hex form => convert it to normal string
@@ -83,6 +84,18 @@ export default function Home() {
         })
     }
 
+    function showProceeds() {
+        const fullPrice = ethers.utils.formatUnits(proceeds, "ether")
+        const indexOfDecimal = fullPrice.indexOf(".")
+        const leadingSubstring = fullPrice.substring(0, indexOfDecimal)
+        const trailingSubstring = fullPrice.substring(indexOfDecimal, indexOfDecimal + 6)
+        let returnString = leadingSubstring + trailingSubstring
+        if (fullPrice.length > 6) {
+            returnString = returnString + "..."
+        }
+        return returnString
+    }
+
     async function setupUI() {
         const returnedProceeds = await runContractFunction({
             params: {
@@ -145,7 +158,9 @@ export default function Home() {
                     />
 
                     <div className="border-t-2 py-4 mt-4 pl-5 font-bold text-lg flex flex-row justify-between">
-                        Your Balance: {proceeds}
+                        <div className="flex flex-row items-center">
+                            Your Balance: &nbsp; <Eth fontSize="20px" /> {showProceeds()}
+                        </div>
                         <div className="pr-5">
                             <Button
                                 onClick={() => {

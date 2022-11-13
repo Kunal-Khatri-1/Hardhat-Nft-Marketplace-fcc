@@ -32,7 +32,7 @@ export default function Home() {
                 <div className=" grid grid-cols-4 place-items-center gap-6">
                     {isWeb3Enabled ? (
                         loading || !listedNfts ? (
-                            <div>Hello Loading...</div>
+                            <div>Loading...</div>
                         ) : (
                             // listedNfts.activeItems.map() NOT listedNfts.map()
                             listedNfts.activeItems.map((nft) => {

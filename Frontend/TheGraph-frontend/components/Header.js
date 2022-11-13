@@ -6,8 +6,8 @@ export default function Header() {
         <nav className="p-5 border-b-2 flex flex-row justify-between items-center">
             <Link href="/" legacyBehavior>
                 <a>
-                    <h1 className="py-4 px-4 text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-600 whitespace-nowrap">
-                        APE JUNGLE
+                    <h1 className="py-4 px-4 text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-300 whitespace-nowrap">
+                        PARADIZ
                     </h1>
                 </a>
             </Link>
